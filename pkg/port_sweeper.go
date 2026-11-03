@@ -46,7 +46,7 @@ func NewPortSweeper(cfg Config) (*PortSweeper, error) {
 	}
 
 	if len(cfg.Ports) == 0 {
-		return nil, errors.New("at least one port is required.")
+		return nil, errors.New("at least one 'port' is required.")
 	}
 
 	if cfg.Workers < 1 {
@@ -61,7 +61,7 @@ func NewPortSweeper(cfg Config) (*PortSweeper, error) {
 	seen := make(map[int]struct{}, len(cfg.Ports))
 
 	for _, port := range cfg.Ports {
-		if port < 1 || port >= 65535 {
+		if port < 1 || port > 65535 {
 			return nil, fmt.Errorf("invalid port %d", port)
 		}
 
@@ -83,7 +83,7 @@ func NewPortSweeper(cfg Config) (*PortSweeper, error) {
 	return &PortSweeper{config: cfg}, nil
 }
 
-func (ps *PortSweeper) testPort(ctx context.Context, port int) PortResult {
+func (ps *PortSweeper) scanPort(ctx context.Context, port int) PortResult {
 	result := PortResult{
 		Host:   ps.config.Host,
 		Port:   port,
@@ -138,7 +138,7 @@ func (ps *PortSweeper) Scan(
 			defer workers.Done()
 
 			for port := range jobs {
-				result := ps.testPort(ctx, port)
+				result := ps.scanPort(ctx, port)
 				results <- result
 			}
 		}()
