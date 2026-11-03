@@ -9,13 +9,30 @@ A port scanner written in Golang.
 - Timing abilities
 - Interrupt support
 
-
-## Usage
+## Clone
 
 ```bash
 git clone git@github.com:pierrecdevs/go-portsweeper.git
 cd go-portsweeper
-go build .../.go
+```
+
+## Build
+
+### Makefile
+
+```bash
+make build
+```
+
+### Manually
+
+```bash
+go build ./... 
+```
+
+## Usage
+
+```bash
 ./main -host scanme.nmap.org -ports 1-1024 # multi port
 ./main -host scanme.nmap.org -port 80 # single port
 ./main -host scanme.nmap.org -port 1-65534 -workers 100 # multi port, worker tuning
